@@ -100,7 +100,7 @@ function generateGroupedDoc() {
     if(presenter === "Main Stage" || presenter === "Green Man Tavern" || presenter === "Presenters & Workshops"){
       var stageheader = body.appendParagraph(presenter);
       stageheader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
-      return;
+      //return;
     }
 
     // Add the grouping value as a Heading 1 section
