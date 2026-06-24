@@ -64,6 +64,8 @@ function generateGroupedDoc() {
     // Use the cleaner description, if available
     if(!workshopdescription) workshopdescription = workshopdescriptiondraft;
 
+    //if(presentername === "") presentername = "Miscellaneous";
+
     // Add the title to its respective group
     //presenterWorkshops[presentername].push("<b>" + workshoptitle + "</b>: " + workshopdate + " " + workshoptime + " " + workshoplocation + "\n" + workshopdescription);
     presenterWorkshops[presentername].push(workshoptitle);
@@ -96,12 +98,30 @@ function generateGroupedDoc() {
   var performerheader = body.appendParagraph("Starwood Performers");
   performerheader.setHeading(DocumentApp.ParagraphHeading.HEADING1);
 
+  // Move the empty ("") presenter name to the end of the list
+  var presenterList = Object.keys(presenterWorkshops);
+
+  var index = 0;
+  var targetIndex = 0;
+  for (var ppresenter of presenterList) {
+    if(ppresenter === ""){
+      targetIndex = index;
+    }
+   index++;
+  }
+  presenterList.push(presenterList.splice(targetIndex, 1)[0]);
+
+
   // 4. Append the grouped data into the Doc
-  for (var presenter in presenterWorkshops) {
+  for (var presenter of presenterList) {
     if(presenter === "Main Stage" || presenter === "Green Man Tavern" || presenter === "Presenters & Workshops"){
       var stageheader = body.appendParagraph(presenter);
       stageheader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
       continue;
+    }
+    if(presenter === ""){
+      var stageheader = body.appendParagraph("Miscellaneous");
+      stageheader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
     }
 
     // Add the grouping value as a Heading 1 section
