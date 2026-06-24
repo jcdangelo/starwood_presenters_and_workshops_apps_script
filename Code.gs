@@ -92,13 +92,20 @@ function generateGroupedDoc() {
   var doc = DocumentApp.create('Starwood 2026 Presenters and Workshops - Draft ' + new Date().toISOString());
   var body = doc.getBody();
 
-  
+  var performerheader = body.appendParagraph("Starwood Performers");
+  performerheader.setHeading(DocumentApp.ParagraphHeading.HEADING1);
 
   // 4. Append the grouped data into the Doc
   for (var presenter in presenterWorkshops) {
+    if(presenter === "Main Stage" || presenter === "Green Man Tavern" || presenter === "Presenters & Workshops"){
+      var stageheader = body.appendParagraph(presenter);
+      stageheader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
+      return;
+    }
+
     // Add the grouping value as a Heading 1 section
     var heading = body.appendParagraph(presenter);
-    heading.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    heading.setHeading(DocumentApp.ParagraphHeading.HEADING3);
     
     // Insert the bio paragraph
     body.appendParagraph(biosmap[presenter]);
@@ -118,6 +125,10 @@ function generateGroupedDoc() {
     // Add an empty space between sections
     body.appendParagraph("");
   }
+
+  // Add heading for Schedule section
+  var schedheader = body.appendParagraph("Schedule");
+  schedheader.setHeading(DocumentApp.ParagraphHeading.HEADING1);
 
   // 4.5 Now create the schedule
   var schedssheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Auto schedule");
@@ -162,7 +173,7 @@ function generateGroupedDoc() {
 
   for (var daylist in schedday){
     var dayitem = body.appendParagraph(daylist);
-    dayitem.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+    dayitem.setHeading(DocumentApp.ParagraphHeading.HEADING2);
 
     schedday[daylist].forEach(function(daytime) {
       //var listitem = body.appendListItem('').setGlyphType(DocumentApp.GlyphType.BULLET);
