@@ -126,7 +126,7 @@ function generateGroupedDoc() {
   var schedsmap = {};
   var schedday = {};
   var scheddaymap = {};
-  var schedtime = {};
+  var scheddetails = {};
   schedsrows.forEach(function(row) {
     // Presenter name
     var schedinitial = row[0];
@@ -143,15 +143,21 @@ function generateGroupedDoc() {
     if(!schedday[schedwhenday]){
       schedday[schedwhenday] = [];
       scheddaymap[schedwhenday] = {};
+      scheddetails[schedwhenday] = {};
     }
     // Init the array of events per time
     if(!scheddaymap[schedwhenday][schedwhentime]){
       scheddaymap[schedwhenday][schedwhentime] = [];
       schedday[schedwhenday].push(schedwhentime);
+      scheddetails[schedwhenday][schedwhentime] = [];
     }
     scheddaymap[schedwhenday][schedwhentime].push(schedwhat);
 
     // save details
+    scheddetails[schedwhenday][schedwhentime][schedwhat] = [];
+    scheddetails[schedwhenday][schedwhentime][schedwhat]["who"] = schedwho;
+    scheddetails[schedwhenday][schedwhentime][schedwhat]["initial"] = schedinitial;
+    scheddetails[schedwhenday][schedwhentime][schedwhat]["where"] = schedwhere;
   });
 
   for (var daylist in schedday){
@@ -163,7 +169,7 @@ function generateGroupedDoc() {
       //listitem.appendText(daytime);
       var timeitem = body.appendParagraph(daytime + "\n").setBold(true);
       scheddaymap[daylist][daytime].forEach(function(eventitem) {
-        timeitem.appendText(eventitem + "\n").setBold(false);
+        timeitem.appendText(eventitem + " - " + scheddetails[daylist][daytime][eventitem]["initial"] + " - " + scheddetails[daylist][daytime][eventitem]["where"] + "\n").setBold(false);
       });
     });
     //schedday.forEach(function(eventitem){
