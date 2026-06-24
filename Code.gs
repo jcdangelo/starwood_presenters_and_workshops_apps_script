@@ -119,6 +119,59 @@ function generateGroupedDoc() {
     body.appendParagraph("");
   }
 
+  // 4.5 Now create the schedule
+  var schedssheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Auto schedule");
+  var schedsdata = schedssheet.getDataRange().getValues();
+  var schedsrows = schedsdata.slice(1);
+  var schedsmap = {};
+  var schedday = {};
+  var scheddaymap = {};
+  var schedtime = {};
+  schedsrows.forEach(function(row) {
+    // Presenter name
+    var schedinitial = row[0];
+    var schedwho = row[1];
+    var schedwhat = row[2];
+    var schedwhere = row[3];
+    var schedwhenday = row[4];
+    var schedwhentime = row[5];
+    if(!schedwhat) return;
+    if(!schedday) return;
+    if(schedwhenday === 'When-day') return;
+
+    // Init the array of times per day, when needed
+    if(!schedday[schedwhenday]){
+      schedday[schedwhenday] = [];
+      scheddaymap[schedwhenday] = {};
+    }
+    // Init the array of events per time
+    if(!scheddaymap[schedwhenday][schedwhentime]){
+      scheddaymap[schedwhenday][schedwhentime] = [];
+      schedday[schedwhenday].push(schedwhentime);
+    }
+    scheddaymap[schedwhenday][schedwhentime].push(schedwhat);
+
+    // save details
+  });
+
+  for (var daylist in schedday){
+    var dayitem = body.appendParagraph(daylist);
+    dayitem.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+
+    schedday[daylist].forEach(function(daytime) {
+      //var listitem = body.appendListItem('').setGlyphType(DocumentApp.GlyphType.BULLET);
+      //listitem.appendText(daytime);
+      var timeitem = body.appendParagraph(daytime + "\n").setBold(true);
+      scheddaymap[daylist][daytime].forEach(function(eventitem) {
+        timeitem.appendText(eventitem + "\n").setBold(false);
+      });
+    });
+    //schedday.forEach(function(eventitem){
+     // var listitem = body.appendListItem('').setGlyphType(DocumentApp.GlyphType.BULLET);
+     // listitem.appendText(eventitem);
+    //});
+  }
+
   // 5. Notify the user with a link to the new file
   var url = doc.getUrl();
   SpreadsheetApp.getUi().alert('Success! Your grouped document has been created. Open it here:\n\n' + url);
