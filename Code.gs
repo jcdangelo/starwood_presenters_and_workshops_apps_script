@@ -6,6 +6,7 @@
 // 5. Copy/paste load that new document in yet another window
 // 6. Press "OK"
 // 7. Wait a few seconds, then the content should show up in that new document.
+// 8. Save changes to https://github.com/jcdangelo/starwood_presenters_and_workshops_apps_script
 function generateGroupedDoc() {
   //var sheetdoc = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1fkQOOJG_5CQg3BMHa4NyBYjrFmIgiB-56i1ziUXhT00");
   //var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
