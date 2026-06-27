@@ -161,12 +161,21 @@ function generateGroupedDoc() {
   var scheddetails = {};
   schedsrows.forEach(function(row) {
     // Presenter name
+    //var schedinitial = row[0];
+    //var schedwho = row[1];
+    //var schedwhat = row[2];
+    //var schedwhere = row[3];
+    //var schedwhenday = row[4];
+    //var schedwhentime = row[5];
+
+    // reorg the spreadsheet for the public view; means we have to change how we ingest this data
     var schedinitial = row[0];
-    var schedwho = row[1];
-    var schedwhat = row[2];
+    var schedwhenday = row[1];
+    var schedwhentime = row[2];
     var schedwhere = row[3];
-    var schedwhenday = row[4];
-    var schedwhentime = row[5];
+    var schedwho = row[4];
+    var schedwhat = row[5];
+
     if(!schedwhat) return;
     if(!schedday) return;
     if(schedwhenday === 'When-day') return;
